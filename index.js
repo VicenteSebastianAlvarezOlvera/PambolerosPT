@@ -5,28 +5,35 @@ const http = require('http');
 const path = require('path');
 require('dotenv').config();
 const { dbConnection } = require('./DB/connectDB');
-const mongoose = require('mongoose');
-const jwt = require('jsonwebtoken');
+const port = process.env.PORT;
+const bcryptjs = require('bcryptjs');
+
+const usuariosRouter = require('./routes/usuarios');
 
 app.use(bodyParser.json()); // Configura body-parser para analizar JSON
-app.use('/css', express.static(path.join(__dirname, 'node_modules/bootstrap/dist/css')))
-app.use('/js', express.static(path.join(__dirname, 'node_modules/bootstrap/dist/js')))
-app.use('/js', express.static(path.join(__dirname, 'node_modules/jquery/dist')))
+
+app.use('/api', usuariosRouter);
 
 const server = http.createServer(app);
 
-//Modelos
+dbConnection();
+
+server.listen(port, () => {
+    console.log(`La aplicación está corriendo en el puerto ${port}.`);
+});
+
+/*
+app.use('/css', express.static(path.join(__dirname, 'node_modules/bootstrap/dist/css')))
+app.use('/js', express.static(path.join(__dirname, 'node_modules/bootstrap/dist/js')))
+app.use('/js', express.static(path.join(__dirname, 'node_modules/jquery/dist')))
+*/
+
+/*//Modelos
 const Canchas = require('./models/Canchas');
 const Equipos = require('./models/Equipos');
 const Partidos = require('./models/Partidos');
 const Roles = require('./models/Roles');
-const UsuariosFutbol = require('./models/UsuariosFutbol');
-
-dbConnection();
-
-app.listen(process.env.PORT, () => {
-    console.log('La aplicación está corriendo en el puerto 2000.');
-});
+const UsuariosFutbol = require('./models/UsuariosFutbol');*/
 
 /*
 
