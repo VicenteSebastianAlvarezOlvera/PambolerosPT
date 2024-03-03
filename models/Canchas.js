@@ -1,10 +1,6 @@
 const mongoose = require('mongoose');
 
 const canchasSchema = new mongoose.Schema({
-    /*id: {
-        type: String,
-        required: true
-    },*/
     nombre: {
         type: String,
         required: true
@@ -12,6 +8,10 @@ const canchasSchema = new mongoose.Schema({
     direccion: {
         type: String,
         required: true
+    },
+    dueno: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'UsuariosFutbol', // Cambia 'Config' al nombre correcto de tu modelo Config
     }
 });
 

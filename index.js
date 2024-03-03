@@ -11,12 +11,20 @@ const bcryptjs = require('bcryptjs');
 const usuariosRouter = require('./routes/usuarios');
 
 app.use(bodyParser.json()); // Configura body-parser para analizar JSON
-
+app.use(express.static(path.join(__dirname, 'public')));
 app.use('/api', usuariosRouter);
 
 const server = http.createServer(app);
 
 dbConnection();
+
+app.get('/login', (req, res) => {
+    res.sendFile(path.join(__dirname, 'views/login/login.html'));
+});
+app.get('/nuevoUsuario', (req, res) => {
+    res.sendFile(path.join(__dirname, 'views/crearUsuario/crearUsuario.html'));
+});
+
 
 server.listen(port, () => {
     console.log(`La aplicación está corriendo en el puerto ${port}.`);

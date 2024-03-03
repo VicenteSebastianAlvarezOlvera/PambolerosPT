@@ -13,6 +13,31 @@ const getUsuario = async (req, res) => {
     }
 }
 const postUsuario = async (req, res) => {
+    const usuario = req.body;
+    //const { username, email, password } = usuario;
+    const { nombre, correo, contrasena } = req.body;
+    /*
+    if (!isValidEmail(email)) {
+        return res.render('newUser', { error: 'Correo electrónico no válido', success: false });
+    }
+
+    if (psw !== psw2) {
+        return res.render('newUser', { error: 'Las contraseñas no coinciden', success: false });
+    }*/
+    //const contrasenaEncriptada = encriptarContrasena(psw);
+    const newUser = new UsuariosFutbol({
+        nombre: nombre,
+        correo: correo,
+        contrasena: contrasena
+    })
+    try {
+        await newUser.save();
+        res.redirect('/login');
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: 'Error al guardar la configuración.' });
+    }
+    /*
     try {
         // Create a new instance of your model with data from the request body
         const newUser = new UsuariosFutbol(req.body);
@@ -23,7 +48,7 @@ const postUsuario = async (req, res) => {
     } catch (error) {
         // If there's an error, respond with an error message
         res.status(400).json({ message: error.message });
-    }
+    }*/
 }
 
 module.exports = {
