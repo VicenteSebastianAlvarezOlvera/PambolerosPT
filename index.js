@@ -1,11 +1,17 @@
 const express = require('express');
-const mongoose = require('mongoose');
 const app = express();
 const bodyParser = require('body-parser');
-app.use(bodyParser.json()); // Configura body-parser para analizar JSON
 const http = require('http');
-const jwt = require('jsonwebtoken');
+const path = require('path');
 require('dotenv').config();
+const { dbConnection } = require('./DB/connectDB');
+const mongoose = require('mongoose');
+const jwt = require('jsonwebtoken');
+
+app.use(bodyParser.json()); // Configura body-parser para analizar JSON
+app.use('/css', express.static(path.join(__dirname, 'node_modules/bootstrap/dist/css')))
+app.use('/js', express.static(path.join(__dirname, 'node_modules/bootstrap/dist/js')))
+app.use('/js', express.static(path.join(__dirname, 'node_modules/jquery/dist')))
 
 const server = http.createServer(app);
 
@@ -14,10 +20,42 @@ const Canchas = require('./models/Canchas');
 const Equipos = require('./models/Equipos');
 const Partidos = require('./models/Partidos');
 const Roles = require('./models/Roles');
-const Usuarios = require('./models/Usuarios');
+const UsuariosFutbol = require('./models/UsuariosFutbol');
+
+dbConnection();
+
+app.listen(process.env.PORT, () => {
+    console.log('La aplicación está corriendo en el puerto 2000.');
+});
+
+/*
+
+app.get('/api/data', async (req, res) => {
+    try {
+        const data = await UsuariosFutbol.find();
+        res.json(data);
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+});
+
+// Route to handle POST request
+app.post('/api/data', async (req, res) => {
+    try {
+        // Create a new instance of your model with data from the request body
+        const newUser = new UsuariosFutbol(req.body);
+        // Save the new user to the database
+        await newUser.save();
+        // Respond with the saved user data
+        res.status(201).json(newUser);
+    } catch (error) {
+        // If there's an error, respond with an error message
+        res.status(400).json({ message: error.message });
+    }
+});
 
 //Conectar a la base de datos en MongoDB/Atlas
-async function connect(){
+/*async function connect(){
     try {
         await mongoose.connect(process.env.MONGODB_CNN, {
             useNewUrlParser: true,
@@ -28,8 +66,4 @@ async function connect(){
         console.error(error);
     }
 }
-connect();
-
-app.listen(process.env.PORT, () => {
-    console.log('La aplicación está corriendo en el puerto 2000.');
-});
+connect();*/

@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 
-const UsuariosSchema = new mongoose.Schema({
+const UsuariosFutbolSchema = new mongoose.Schema({
     /*id: {
         type: String,
         required: true
@@ -28,6 +28,6 @@ const UsuariosSchema = new mongoose.Schema({
       },
 });
 
-const Usuarios = mongoose.model('Usuarios', UsuariosSchema)
+const UsuariosFutbol = mongoose.model('UsuariosFutbol', UsuariosFutbolSchema)
 
-module.exports = Usuarios;
+module.exports = UsuariosFutbol;
