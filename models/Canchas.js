@@ -9,10 +9,14 @@ const canchasSchema = new mongoose.Schema({
         type: String,
         required: true
     },
-    dueno: {
+    Propietario: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'UsuariosFutbol', // Cambia 'Config' al nombre correcto de tu modelo Config
-    }
+    },
+    TipoDeCancha: {
+        type: String,
+        required: true
+    },
 });
 
 const Canchas = mongoose.model('Canchas', canchasSchema);

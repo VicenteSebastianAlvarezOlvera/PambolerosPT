@@ -2,6 +2,8 @@ const { response, request } = require('express');
 const fs = require('fs');
 const bcryptjs = require('bcryptjs');
 const UsuariosFutbol = require('../models/UsuariosFutbol');
+const Canchas = require('../models/Canchas');
+
 const path = require('path');
 
 const getUsuario = async (req, res) => {
@@ -51,7 +53,63 @@ const postUsuario = async (req, res) => {
     }*/
 }
 
+const postUsuarioCancha = async (req, res) => {
+    const { nombre, correo, contrasena, nombreCancha, direccion, tipoCancha } = req.body;
+    //const contrasenaEncriptada = encriptarContrasena(psw);
+    try {
+        // Guardar el nuevo usuario
+        const newUser = new UsuariosFutbol({
+            nombre: nombre,
+            correo: correo,
+            contrasena: contrasena
+        });
+        const savedUser = await newUser.save(); // Guardar el nuevo usuario y obtener el objeto guardado
+        const propietarioId = savedUser._id; // Obtener el ID del nuevo usuario
+        // Guardar la nueva cancha
+        const newCancha = new Canchas({
+            nombre: nombreCancha,
+            direccion: direccion,
+            Propietario: propietarioId, // Usar el ID del propietario
+            TipoDeCancha: tipoCancha
+        });
+        await newCancha.save(); // Guardar la nueva cancha
+        res.redirect('/login');
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: 'Error al guardar la configuración.' });
+    }
+
+    /*const newUser = new UsuariosFutbol({
+        nombre: nombre,
+        correo: correo,
+        contrasena: contrasena
+    })
+    try {
+        await newUser.save(); // Guardar el nuevo usuario y obtener el objeto guardado
+        //res.redirect('/login');
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: 'Error al guardar la configuración.' });
+    }
+
+    const newCancha = new Canchas ({
+        nombre : nombreCancha,
+        direccion : direccion,
+        propietario: newUser._id,
+        TipoDeCancha: tipoCancha
+    })
+    try {
+        await newCancha.save();
+        res.redirect('/login');
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: 'Error al guardar la configuración.' });
+    }*/
+}
+
 module.exports = {
     getUsuario,
-    postUsuario
+    postUsuario,
+    postUsuarioCancha//,
+    //postUsuarioEquipo
 }

@@ -8,7 +8,11 @@ const EquiposSchema = new mongoose.Schema({
     nombre: {
         type: String,
         required: true
-    }
+    },
+    Capitan: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'UsuariosFutbol', // Cambia 'Config' al nombre correcto de tu modelo Config
+    },
 });
 
 const Equipos = mongoose.model('Equipos', EquiposSchema);

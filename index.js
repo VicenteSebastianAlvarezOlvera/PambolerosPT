@@ -24,6 +24,12 @@ app.get('/login', (req, res) => {
 app.get('/nuevoUsuario', (req, res) => {
     res.sendFile(path.join(__dirname, 'views/crearUsuario/crearUsuario.html'));
 });
+app.get('/nuevoUsuarioEquipo', (req, res) => {
+    res.sendFile(path.join(__dirname, 'views/crearUsuarioEquipo/crearUsuarioEquipo.html'));
+});
+app.get('/nuevoUsuarioCancha', (req, res) => {
+    res.sendFile(path.join(__dirname, 'views/crearCancha/crearCancha.html'));
+});
 
 
 server.listen(port, () => {

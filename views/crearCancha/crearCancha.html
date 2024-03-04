@@ -23,14 +23,14 @@
 <!--===============================================================================================-->	
 	<link rel="stylesheet" type="text/css" href="./vendor/daterangepicker/daterangepicker.css">
 <!--===============================================================================================-->
-	<link rel="stylesheet" type="text/css" href="./css/utilCrearUsuario.css">
-	<link rel="stylesheet" type="text/css" href="./css/mainCrearUsuario.css">
+	<link rel="stylesheet" type="text/css" href="./css/utilCrearCancha.css">
+	<link rel="stylesheet" type="text/css" href="./css/mainCrearCancha.css">
 <!--===============================================================================================-->
 </head>
 <body>
 	
 	<div class="limiter">
-		<div class="container-login100" style="background-image: url('./images/fucho.jpg');">
+		<div class="container-login100" style="background-image: url('./images/canchas.jpg');">
 			<div class="wrap-login100">
 				<form class="login100-form validate-form">
 					<span class="login100-form-logo">
@@ -38,7 +38,7 @@
 					</span>
 
 					<span class="login100-form-title p-b-34 p-t-27">
-						Crear un nuevo usuario
+						Crear una cuenta de administrador para cancha
 					</span>
 
                     <div class="wrap-input100 validate-input" data-validate = "Por favor ingresa tu nombre">
@@ -60,6 +60,30 @@
 						<input class="input100" type="password" name="confirmPass" placeholder="Confirma tu contraseña" required>
 						<span class="focus-input100" data-placeholder="&#xf191;"></span>
 					</div>
+
+                    <div class="wrap-input100 validate-input" data-validate = "Por favor ingresa el nombre de la cancha">
+						<input class="input100" type="text" name="nombreCancha" placeholder="Nombre de la cancha" required>
+						<span class="focus-input100" data-placeholder="&#xf1f7;"></span>
+					</div>
+
+                    <div class="wrap-input100 validate-input" data-validate = "Ingresa la direccion de la cancha">
+						<input class="input100" type="text" name="direccion" placeholder="Direccion" required>
+						<span class="focus-input100" data-placeholder="&#xf1ab;"></span>
+					</div>
+
+                    <div class="wrap-input100 validate-input" data-validate="Selecciona el tipo de cancha">
+                        <select class="input100" name="tipoCancha" required>
+                          <option value="" disabled selected hidden>Elegir tipo de cancha</option>
+                          <option value="Futbol 11" style="color: black;">Fútbol 11</option>
+                          <option value="Futbol 7" style="color: black;">Fútbol 7</option>
+                          <option value="Futbol Sala" style="color: black;">Fútbol Sala</option>
+                          <option value="Futbol Playa" style="color: black;">Fútbol Playa</option>
+                          <!-- Agrega más opciones según sea necesario -->
+                        </select>
+                        <span class="focus-input100" data-placeholder="&#xf1f7;"></span>
+                      </div>
+                      
+                    
 
 					<div class="container-login100-form-btn">
 						<button class="login100-form-btn">
@@ -95,7 +119,7 @@
 <!--===============================================================================================-->
 	<script src="vendor/countdowntime/countdowntime.js"></script>
 <!--===============================================================================================-->
-	<script src="js/crearUsuario.js"></script> 
+	<script src="js/crearUsuarioCancha.js"></script> 
 	<!--<script src="../crearUsuario/js/crearUsuario.js"></script>-->
 
 </body>
