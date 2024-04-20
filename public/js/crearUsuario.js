@@ -32,17 +32,19 @@ document.addEventListener('DOMContentLoaded', function () {
                 })
             },
             );
+            console.log(response);
             if (!response.ok) {
                 throw new Error('Error al enviar los datos.');
             }
             if (response.ok) {
-                alert('Usuario creado exitosamente.');
-                res.redirect('/login');
+                alert('IF Usuario creado exitosamente.');
+                //res.redirect('/login');
+                window.location.href = '/login';
             }
             const data = await response.json();
-            alert('Usuario creado exitosamente.');
+            alert('CONST Usuario creado exitosamente.');
         } catch (error) {
-            throw new Error('Error al enviar los datos.');
+            throw new Error('Catch Error al enviar los datos.');
         }
     });
 });
