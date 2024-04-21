@@ -21,6 +21,9 @@ dbConnection();
 app.get('/login', (req, res) => {
     res.sendFile(path.join(__dirname, 'views/login/login.html'));
 });
+app.get('/home', (req, res) => {
+    res.sendFile(path.join(__dirname, 'views/index.html'));
+});
 app.get('/nuevoUsuario', (req, res) => {
     res.sendFile(path.join(__dirname, 'views/crearUsuario/crearUsuario.html'));
 });
@@ -31,7 +34,26 @@ app.get('/nuevoUsuarioCancha', (req, res) => {
     res.sendFile(path.join(__dirname, 'views/crearCancha/crearCancha.html'));
 });
 
+/*router.get('/consulta', async (req, res) => {
+    try {
+        const equipos = await Equipo.find({}, '_id');
+        const canchas = await Cancha.find({}, '_id');
+        const arbitros = await Arbitros.find({}, '_id');
+        const datos = {
+            Equipos: equipos.map(equipo => equipo._id),
+            Canchas: canchas.map(cancha => cancha._id),
+            Arbitros: arbitros.map(arbitro => arbitro._id)
+        };
 
+        // Enviar la respuesta al cliente
+        res.json(datos);
+    } catch (error) {
+        console.error(error);
+        // Enviar un error al cliente si hay algún problema con la consulta
+        res.status(500).json({ error: 'Error al consultar la base de datos.' });
+    }
+});
+*/
 server.listen(port, () => {
     console.log(`La aplicación está corriendo en el puerto ${port}.`);
 });

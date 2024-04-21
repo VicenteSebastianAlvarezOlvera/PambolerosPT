@@ -1,19 +1,83 @@
 const { response, request } = require('express');
 const fs = require('fs');
-const bcryptjs = require('bcryptjs');
+const bcrypt = require('bcryptjs');
 const UsuariosFutbol = require('../models/UsuariosFutbol');
 const Canchas = require('../models/Canchas');
-
+const saltRounds = 10;
 const path = require('path');
 
+function encriptarContrasena(contrasena) {
+    return bcrypt.hashSync(contrasena, saltRounds);
+}
+
 const getUsuario = async (req, res) => {
+    const { correo, contrasena } = req.body; // Asegúrate de que estás accediendo al campo correcto para la contraseña
+    console.log(correo, contrasena);
     try {
-        const data = await UsuariosFutbol.find();
-        res.json(data);
+        const UsuarioSesion = await UsuariosFutbol.findOne({ correo: correo });
+
+        if (!UsuarioSesion) {
+            // Si el usuario no existe, redirige o envía un mensaje de error
+            return res.redirect('/HalfSuccess'); // O envía un mensaje de error de alguna manera
+        }
+        console.log("En efecto, hay sesion");
+        console.log((bcrypt.compareSync(contrasena, UsuarioSesion.contrasena)));
+        // Si el usuario existe, verifica la contraseña
+        if (bcrypt.compareSync(contrasena, UsuarioSesion.contrasena)) {
+            // Si la contraseña es correcta, redirige a la página de éxito
+            return res.status(200).json({ success: 'Login successful' });
+        } else {
+            // Si la contraseña es incorrecta, redirige o envía un mensaje de error
+            return res.redirect('/HalfHalfSuccess'); // O envía un mensaje de error de alguna manera
+        }
     } catch (error) {
-        res.status(500).json({ message: error.message });
+        console.error(error);
+        res.status(500).json({ error: 'Error al autenticar el usuario.' });
     }
 }
+
+
+/*const getUsuario = async (req, res) => {
+
+    const usuario = req.body;
+    console.log(usuario);
+    console.log(req.body);
+    const { correo, contrasena } = usuario;
+    console.log(correo, contrasena );
+    try {
+        const UsuarioSesion = await UsuariosFutbol.findOne({  correo: correo });
+        if (UsuarioSesion && bcrypt.compareSync(contrasena, UsuarioSesion.password)) {
+            //const customJWT = await generarJWT(UsuarioSesion._id);
+            //const nombreUsuario = UsuarioSesion.nombre;
+            res.redirect('/Success');
+        } else {
+            return res.redirect('/HalfSuccess');
+        }}
+          catch (error) {
+            console.error(error);
+            res.status(500).json({ error: 'Error al guardar la configuración.' });
+      }
+}*/
+/*
+app.post('/login', async (req, res) => {
+    const usuario = req.body;
+    const { uname, psw } = usuario;
+    try {
+        const UsuarioSesion = await Usuario.findOne({  correo: uname });
+        if (UsuarioSesion && bcrypt.compareSync(psw, UsuarioSesion.password)) {
+            const customJWT = await generarJWT(UsuarioSesion._id);
+            const nombreUsuario = UsuarioSesion.nombre;
+            res.redirect(`http://localhost:1000/index?token=${customJWT}&nombre=${nombreUsuario}`);
+        } else {
+            return res.render('login', { error: 'Datos incorrectos', success: false });
+        }}
+          catch (error) {
+          console.error(error);
+      }
+});
+*/
+
+
 const postUsuario = async (req, res) => {
     const usuario = req.body;
     //const { username, email, password } = usuario;
@@ -26,11 +90,11 @@ const postUsuario = async (req, res) => {
     if (psw !== psw2) {
         return res.render('newUser', { error: 'Las contraseñas no coinciden', success: false });
     }*/
-    //const contrasenaEncriptada = encriptarContrasena(psw);
+    const contrasenaEncriptada = encriptarContrasena(contrasena);
     const newUser = new UsuariosFutbol({
         nombre: nombre,
         correo: correo,
-        contrasena: contrasena
+        contrasena: contrasenaEncriptada
     })
     try {
         await newUser.save();

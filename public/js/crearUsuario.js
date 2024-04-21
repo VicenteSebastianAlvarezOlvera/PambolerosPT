@@ -8,16 +8,16 @@ document.addEventListener('DOMContentLoaded', function () {
         const email = this.querySelector('input[type="email"]').value;
         const password = this.querySelector('input[name="contrasena"]').value;
         const confirmPassword = this.querySelector('input[name="confirmPass"]').value;
-        console.log(username);
-        console.log(email);
-        console.log(password);
-        console.log(confirmPassword);
+        
+        //console.log(username);
+        //console.log(email);
+        //console.log(password);
+        //console.log(confirmPassword);
         // Verificar que las contraseñas sean iguales
         if (password !== confirmPassword) {
             alert('Las contraseñas no coinciden.');
             return;
         }
-
         // Enviar solicitud POST a la API
         try {
             const response = await fetch('http://localhost:2000/api/data', {
