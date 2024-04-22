@@ -3,8 +3,12 @@ const fs = require('fs');
 const bcrypt = require('bcryptjs');
 const UsuariosFutbol = require('../models/UsuariosFutbol');
 const Canchas = require('../models/Canchas');
+const Roles = require('../models/Roles');
+
 const saltRounds = 10;
 const path = require('path');
+const jwt = require('jsonwebtoken');
+require('dotenv').config();
 
 function encriptarContrasena(contrasena) {
     return bcrypt.hashSync(contrasena, saltRounds);
@@ -20,12 +24,23 @@ const getUsuario = async (req, res) => {
             // Si el usuario no existe, redirige o envía un mensaje de error
             return res.redirect('/HalfSuccess'); // O envía un mensaje de error de alguna manera
         }
-        console.log("En efecto, hay sesion");
-        console.log((bcrypt.compareSync(contrasena, UsuarioSesion.contrasena)));
+        //console.log("En efecto, hay sesion");
+        //console.log((bcrypt.compareSync(contrasena, UsuarioSesion.contrasena)));
         // Si el usuario existe, verifica la contraseña
         if (bcrypt.compareSync(contrasena, UsuarioSesion.contrasena)) {
+            const token = jwt.sign({ correo: correo }, process.env.PRIVATE_KEY, { expiresIn: '1h' });
+            const userData = {
+                username: UsuarioSesion.nombre,
+                rol: UsuarioSesion.rol
+                // Other user data...
+            };
+            console.log("Controller/usuarios.js: ", userData, token);
             // Si la contraseña es correcta, redirige a la página de éxito
-            return res.status(200).json({ success: 'Login successful' });
+            //return res.status(200).json({ success: 'Login successful' });
+            return res.status(200).json({ token: token, userData: userData});
+            //req.session.userData = userData, token;
+            //res.redirect('/home');
+
         } else {
             // Si la contraseña es incorrecta, redirige o envía un mensaje de error
             return res.redirect('/HalfHalfSuccess'); // O envía un mensaje de error de alguna manera
@@ -81,20 +96,17 @@ app.post('/login', async (req, res) => {
 const postUsuario = async (req, res) => {
     const usuario = req.body;
     //const { username, email, password } = usuario;
-    const { nombre, correo, contrasena } = req.body;
-    /*
-    if (!isValidEmail(email)) {
-        return res.render('newUser', { error: 'Correo electrónico no válido', success: false });
-    }
-
-    if (psw !== psw2) {
-        return res.render('newUser', { error: 'Las contraseñas no coinciden', success: false });
-    }*/
+    const { nombre, correo, contrasena, rol } = req.body;
+    console.log('const postUsuario', nombre, correo, contrasena, rol);
+    const Rol = await Roles.findOne({ id_rol: rol })
+    console.log('rol DB', Rol);
+    const guardarRol = Rol._id;
     const contrasenaEncriptada = encriptarContrasena(contrasena);
     const newUser = new UsuariosFutbol({
         nombre: nombre,
         correo: correo,
-        contrasena: contrasenaEncriptada
+        contrasena: contrasenaEncriptada,
+        rol: guardarRol
     })
     try {
         await newUser.save();

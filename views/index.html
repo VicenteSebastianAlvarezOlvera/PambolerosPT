@@ -166,20 +166,21 @@
             <a class="nav-link active" aria-current="page" href="#">Inicio</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="#">Partido</a>
+            <a class="nav-link d-none" id="botonPartido" href="#">Partido</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="#">Cancha</a>
+            <a class="nav-link d-none" id="botonCancha" href="#">Cancha</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="#">Jugadores</a>
+            <a class="nav-link d-none" id="botonJugadores" href="#">Jugadores</a>
           </li>
         </ul>
         <form class="d-flex" role="search">    
-          <a class="btn btn-outline-success me-2" href="/login">Iniciar Sesión</a>
-          <a class="btn btn-outline-info me-2" href="/nuevoUsuario">Crear Usuario</a>
+          <a class="btn btn-outline-success me-2 d-none" id="login" href="/login">Iniciar Sesión</a>
+          <a class="btn btn-outline-info me-2 d-none" id="nuevoUsuario" href="/nuevoUsuario">Crear Usuario</a>
           <!-- Editar color y funcion-->
-          <a class="btn btn-outline-danger" href="/nuevoUsuario">Cerrar Sesión</a>
+          <a class="btn btn-outline-light me-2 d-none" id="usuario">Bienvenid@, <span id="nombreUsuario"></span></a>
+          <a class="btn btn-outline-danger  d-none" id="cerrarSesion">Cerrar Sesión</a>
         </form>
       </div>
     </div>
@@ -289,11 +290,12 @@
 
   <!-- FOOTER -->
   <footer class="container">
-    <p class="float-end"><a href="#">Back to top</a></p>
-    <p>&copy; 2017–2024 Company, Inc. &middot; <a href="#">Privacy</a> &middot; <a href="#">Terms</a></p>
+    <p class="float-end"><a href="#">Ir hasta arriba</a></p>
+    <p>&copy; Pamboleros<!-- &middot; <a href="#">Privacy</a> &middot; <a href="#">Terms</a--></p>
   </footer>
 </main>
 <script src="../assets/dist/js/bootstrap.bundle.min.js"></script>
+<script src="js/index.js"></script>
 
     </body>
 </html>

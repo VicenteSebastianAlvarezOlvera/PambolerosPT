@@ -7,7 +7,7 @@ require('dotenv').config();
 const { dbConnection } = require('./DB/connectDB');
 const port = process.env.PORT;
 const bcryptjs = require('bcryptjs');
-
+const jwt = require('jsonwebtoken');
 const usuariosRouter = require('./routes/usuarios');
 
 app.use(bodyParser.json()); // Configura body-parser para analizar JSON
@@ -18,11 +18,32 @@ const server = http.createServer(app);
 
 dbConnection();
 
+// Express example
+app.post('/verifyToken', (req, res) => {
+    const { token } = req.body;
+    //console.log('app.post(/verifyToken',req.body);
+    try {
+      const decoded = jwt.verify(token, process.env.PRIVATE_KEY);
+      //console.log('Token verificado:', decoded);
+      //return res.status(200);
+      return res.status(200).json({ verified: true });
+    } catch (error) {
+      //console.error('Error al verificar el JWT:', error.message);
+      //return null;
+      return res.status(400).json({ error: 'Token verification failed' });
+    }
+      
+    // Verify the token (using a library like jsonwebtoken)
+    // If the token is valid, respond with a success status (200)
+    // If the token is invalid, respond with an error status (e.g., 401 Unauthorized)
+});
+
 app.get('/login', (req, res) => {
     res.sendFile(path.join(__dirname, 'views/login/login.html'));
 });
 app.get('/home', (req, res) => {
     res.sendFile(path.join(__dirname, 'views/index.html'));
+    //const userData = req.session.userData;
 });
 app.get('/nuevoUsuario', (req, res) => {
     res.sendFile(path.join(__dirname, 'views/crearUsuario/crearUsuario.html'));

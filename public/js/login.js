@@ -23,6 +23,7 @@ document.addEventListener('DOMContentLoaded', function () {
             },
             );
             console.log(response);
+            
             if (!response.ok) {
                 //throw new Error('Error al enviar los datos.');
                 alert('Datos incorrectos.');
@@ -30,9 +31,20 @@ document.addEventListener('DOMContentLoaded', function () {
                 window.location.href = '/login';
             }
             if (response.ok) {
-                //alert('IF Usuario creado exitosamente.');
-                //res.redirect('/login');
+                const data = await response.json();
+                console.log(data);
+                const token = data.token;
+                const userData = data.userData;
+                localStorage.setItem('token', token); // Store the token in local storage
+                localStorage.setItem('userData', JSON.stringify(userData)); // Store the token in local storage
+                //localStorage.setItem('userData2', userData);
+                console.log(token, userData);
+                /*setTimeout(() => {
+                    console.log('Han pasado 10 segundos');
+                    window.location.href = '/home';
+                }, 25000);*/
                 window.location.href = '/home';
+
             }
             const data = await response.json();
             alert('CONST Usuario creado exitosamente.');

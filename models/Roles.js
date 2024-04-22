@@ -1,10 +1,10 @@
 const mongoose = require('mongoose');
 
 const RolesSchema = new mongoose.Schema({
-    /*id: {
+    id_rol: {
         type: String,
         required: true
-    },*/
+    },
     nombre: {
         type: String,
         required: true

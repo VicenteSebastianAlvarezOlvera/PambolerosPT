@@ -8,6 +8,7 @@ document.addEventListener('DOMContentLoaded', function () {
         const email = this.querySelector('input[type="email"]').value;
         const password = this.querySelector('input[name="contrasena"]').value;
         const confirmPassword = this.querySelector('input[name="confirmPass"]').value;
+        const rol = "1";
         
         //console.log(username);
         //console.log(email);
@@ -28,7 +29,8 @@ document.addEventListener('DOMContentLoaded', function () {
                 body: JSON.stringify({
                     nombre: username,
                     correo: email,
-                    contrasena: password
+                    contrasena: password,
+                    rol: rol
                 })
             },
             );
@@ -37,14 +39,13 @@ document.addEventListener('DOMContentLoaded', function () {
                 throw new Error('Error al enviar los datos.');
             }
             if (response.ok) {
-                alert('IF Usuario creado exitosamente.');
-                //res.redirect('/login');
+                alert('Usuario creado exitosamente.');
                 window.location.href = '/login';
             }
             const data = await response.json();
-            alert('CONST Usuario creado exitosamente.');
+            alert('Usuario creado exitosamente.');
         } catch (error) {
-            throw new Error('Catch Error al enviar los datos.');
+            throw new Error('Error al enviar los datos.');
         }
     });
 });
