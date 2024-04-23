@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<title>Crear Usuario</title>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+<!--===============================================================================================-->	
+	<link rel="icon" type="image/png" href="./images/icons/favicon.ico"/>
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="./vendor/bootstrap/css/bootstrap.min.css">
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="./fonts/font-awesome-4.7.0/css/font-awesome.min.css">
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="./fonts/iconic/css/material-design-iconic-font.min.css">
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="./vendor/animate/animate.css">
+<!--===============================================================================================-->	
+	<link rel="stylesheet" type="text/css" href="./vendor/css-hamburgers/hamburgers.min.css">
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="./vendor/animsition/css/animsition.min.css">
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="./vendor/select2/select2.min.css">
+<!--===============================================================================================-->	
+	<link rel="stylesheet" type="text/css" href="./vendor/daterangepicker/daterangepicker.css">
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="./css/utilCrearCancha.css">
+	<link rel="stylesheet" type="text/css" href="./css/mainCrearCancha.css">
+<!--===============================================================================================-->
+</head>
+<body>
+	
+	<div class="limiter">
+		<div class="container-login100" style="background-image: url('./images/canchas.jpg');">
+			<div class="wrap-login100">
+				<form class="login100-form validate-form">
+					<span class="login100-form-logo">
+						<img src = './images/soccer-ball.png' style = 'width: 80px;'>
+					</span>
+
+					<span class="login100-form-title p-b-34 p-t-27">
+						Crear una cuenta de administrador para cancha
+					</span>
+
+                    <div class="wrap-input100 validate-input" data-validate = "Por favor ingresa tu nombre">
+						<input class="input100" type="text" name="username" placeholder="Nombre" required>
+						<span class="focus-input100" data-placeholder="&#xf207;"></span>
+					</div>
+
+					<div class="wrap-input100 validate-input" data-validate = "Por favor ingresa tu correo">
+						<input class="input100" type="email" name="email" placeholder="Correo" required>
+						<span class="focus-input100" data-placeholder="&#xf15a;"></span>
+					</div>
+
+					<div class="wrap-input100 validate-input" data-validate="Ingresa tu contraseña">
+						<input class="input100" type="password" name="contrasena" placeholder="Contraseña" required>
+						<span class="focus-input100" data-placeholder="&#xf191;"></span>
+					</div>
+
+                    <div class="wrap-input100 validate-input" data-validate="Confirma tu contraseña">
+						<input class="input100" type="password" name="confirmPass" placeholder="Confirma tu contraseña" required>
+						<span class="focus-input100" data-placeholder="&#xf191;"></span>
+					</div>
+
+                    <div class="wrap-input100 validate-input" data-validate = "Por favor ingresa el nombre de la cancha">
+						<input class="input100" type="text" name="nombreCancha" placeholder="Nombre de la cancha" required>
+						<span class="focus-input100" data-placeholder="&#xf1f7;"></span>
+					</div>
+
+                    <div class="wrap-input100 validate-input" data-validate = "Ingresa la direccion de la cancha">
+						<input class="input100" type="text" name="direccion" placeholder="Direccion" required>
+						<span class="focus-input100" data-placeholder="&#xf1ab;"></span>
+					</div>
+
+                    <div class="wrap-input100 validate-input" data-validate="Selecciona el tipo de cancha">
+                        <select class="input100" name="tipoCancha" required>
+                          <option value="" disabled selected hidden>Elegir tipo de cancha</option>
+                          <option value="Futbol 11" style="color: black;">Fútbol 11</option>
+                          <option value="Futbol 7" style="color: black;">Fútbol 7</option>
+                          <option value="Futbol Sala" style="color: black;">Fútbol Sala</option>
+                          <option value="Futbol Playa" style="color: black;">Fútbol Playa</option>
+                          <!-- Agrega más opciones según sea necesario -->
+                        </select>
+                        <span class="focus-input100" data-placeholder="&#xf1f7;"></span>
+                      </div>
+                      
+                    
+
+					<div class="container-login100-form-btn">
+						<button class="login100-form-btn">
+							Crear usuario
+						</button>
+					</div>
+
+					<div class="text-center p-t-20">
+						<a class="txt1" href="/login">
+							¿Ya tienes una cuenta? Iniciar sesion
+						</a><br>
+						<a class="txt1" href="/nuevoUsuario">
+							¿Quieres ser un jugador? Registrate
+						</a><br>
+						<a class="txt1" href="/nuevoUsuarioEquipo">
+							¿Quieres crear un equipo? Registralo
+						</a>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+	
+
+	<div id="dropDownSelect1"></div>
+	
+<!--===============================================================================================-->
+	<script src="vendor/jquery/jquery-3.2.1.min.js"></script>
+<!--===============================================================================================-->
+	<script src="vendor/animsition/js/animsition.min.js"></script>
+<!--===============================================================================================-->
+	<script src="vendor/bootstrap/js/popper.js"></script>
+	<script src="vendor/bootstrap/js/bootstrap.min.js"></script>
+<!--===============================================================================================-->
+	<script src="vendor/select2/select2.min.js"></script>
+<!--===============================================================================================-->
+	<script src="vendor/daterangepicker/moment.min.js"></script>
+	<script src="vendor/daterangepicker/daterangepicker.js"></script>
+<!--===============================================================================================-->
+	<script src="vendor/countdowntime/countdowntime.js"></script>
+<!--===============================================================================================-->
+	<script src="js/crearUsuarioCancha.js"></script> 
+	<!--<script src="../crearUsuario/js/crearUsuario.js"></script>-->
+
+</body>
+</html>

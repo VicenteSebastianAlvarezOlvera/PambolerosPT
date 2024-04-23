@@ -6,9 +6,9 @@ const path = require('path');
 require('dotenv').config();
 const { dbConnection } = require('./DB/connectDB');
 const port = process.env.PORT;
-const bcryptjs = require('bcryptjs');
-const jwt = require('jsonwebtoken');
+const jwt = require('jsonwebtoken');    
 const usuariosRouter = require('./routes/usuarios');
+
 
 app.use(bodyParser.json()); // Configura body-parser para analizar JSON
 app.use(express.static(path.join(__dirname, 'public')));
@@ -17,8 +17,6 @@ app.use('/api', usuariosRouter);
 const server = http.createServer(app);
 
 dbConnection();
-
-// Express example
 app.post('/verifyToken', (req, res) => {
     const { token } = req.body;
     //console.log('app.post(/verifyToken',req.body);
@@ -32,27 +30,47 @@ app.post('/verifyToken', (req, res) => {
       //return null;
       return res.status(400).json({ error: 'Token verification failed' });
     }
-      
-    // Verify the token (using a library like jsonwebtoken)
-    // If the token is valid, respond with a success status (200)
-    // If the token is invalid, respond with an error status (e.g., 401 Unauthorized)
 });
-
+      
 app.get('/login', (req, res) => {
-    res.sendFile(path.join(__dirname, 'views/login/login.html'));
+    res.sendFile(path.join(__dirname, 'public/views/login/login.html'));
+    //res.sendFile(path.join(__dirname, 'views/login/login.html'));
+
 });
 app.get('/home', (req, res) => {
-    res.sendFile(path.join(__dirname, 'views/index.html'));
-    //const userData = req.session.userData;
+    res.sendFile(path.join(__dirname, 'public/views/index.html'));
+    //res.sendFile(path.join(__dirname, 'views/index.html'));
+
+});
+app.get('/alineaciones', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public/views/alineaciones.html'));
+    //res.sendFile(path.join(__dirname, 'views/alineaciones.html'));
+
+});
+app.get('/alineacionEquipo', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public/views/quick.html'));
+    //res.sendFile(path.join(__dirname, 'views/quick.html'));
+
+});
+app.get('/partido', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public/views/portada.html'));
+    //res.sendFile(path.join(__dirname, 'views/portada.html'));
+
 });
 app.get('/nuevoUsuario', (req, res) => {
-    res.sendFile(path.join(__dirname, 'views/crearUsuario/crearUsuario.html'));
+    res.sendFile(path.join(__dirname, 'public/views/crearUsuario/crearUsuario.html'));
+    //res.sendFile(path.join(__dirname, 'views/crearUsuario/crearUsuario.html'));
+
 });
 app.get('/nuevoUsuarioEquipo', (req, res) => {
-    res.sendFile(path.join(__dirname, 'views/crearUsuarioEquipo/crearUsuarioEquipo.html'));
+    res.sendFile(path.join(__dirname, 'public/views/crearUsuarioEquipo/crearUsuarioEquipo.html'));
+    //res.sendFile(path.join(__dirname, 'views/crearUsuarioEquipo/crearUsuarioEquipo.html'));
+
 });
 app.get('/nuevoUsuarioCancha', (req, res) => {
-    res.sendFile(path.join(__dirname, 'views/crearCancha/crearCancha.html'));
+    res.sendFile(path.join(__dirname, 'public/views/crearCancha/crearCancha.html'));
+    //res.sendFile(path.join(__dirname, 'views/crearCancha/crearCancha.html'));
+
 });
 
 /*router.get('/consulta', async (req, res) => {
@@ -75,9 +93,9 @@ app.get('/nuevoUsuarioCancha', (req, res) => {
     }
 });
 */
-server.listen(port, () => {
-    console.log(`La aplicación está corriendo en el puerto ${port}.`);
-});
+    server.listen(port, () => {
+        console.log(`La aplicación está corriendo en el puerto ${port}.`);
+    });
 
 /*
 app.use('/css', express.static(path.join(__dirname, 'node_modules/bootstrap/dist/css')))

@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <style>
+
+    </style>
+
+    <title>Imagen Ajustada</title>
+</head>
+<body>
+    <header data-bs-theme="dark">
+        <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
+          <div class="container-fluid">
+            <a class="navbar-brand" href="#">P</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+              <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarCollapse">
+              <ul class="navbar-nav me-auto mb-2 mb-md-0">
+                <li class="nav-item">
+                  <a class="nav-link active" aria-current="page" href="#">Home</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="#">Mis Canchas</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link disabled" aria-disabled="true">Bloqueado</a>
+                </li>
+              </ul>
+              <form class="d-flex" role="search">    
+                <button type="button" class="btn btn-link">Cerrar Sesion</button>
+              </form>
+            </div>
+          </div>
+        </nav>
+    </header>
+
+    <main style="margin-top: 60px; margin-left: 20px; margin-right: 20px;">
+      <div class="container-fluid">
+        <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+          <h1 class="h2">Administracion de Canchas</h1>
+          <div class="btn-toolbar mb-2 mb-md-0">
+              <div class="btn-group me-2">
+                  <button type="button" class="btn btn-sm btn-outline-secondary">Anterior</button>
+                  <button type="button" class="btn btn-sm btn-outline-secondary">Siguiente</button>
+              </div>
+              <button type="button" class="btn btn-sm btn-outline-secondary dropdown-toggle d-flex align-items-center gap-1">
+              <svg class="bi">
+                  <use xlink:href="#calendar3"></use>
+              </svg>
+              Esta semana
+              </button>
+          </div>
+      </div>
+
+
+
+
+
+        <div class="row flex-column-reverse flex-md-row">
+            <div class="col-md-9 order-1 order-md-1">
+                <ul class="list-group">
+                    <li class="list-group-item">
+                        <input type="checkbox" class="status" id="item1"> 
+                        <label for="item1">06:00 am - 08:00 am</label>
+                        <span class="badge bg-secondary float-end">Ocupado</span>
+                    </li>
+                    <li class="list-group-item">
+                      <input type="checkbox" class="status" id="item1"> 
+                      <label for="item1">08:00 am - 10:00 am</label>
+                      <span class="badge bg-secondary float-end">Ocupado</span>
+                    </li>
+                    <li class="list-group-item">
+                      <input type="checkbox" class="status" id="item1"> 
+                      <label for="item1">10:00 am - 12:00 pm</label>
+                      <span class="badge bg-secondary float-end">Ocupado</span>
+                    </li>
+                    <li class="list-group-item">
+                      <input type="checkbox" class="status" id="item1"> 
+                      <label for="item1">12:00 pm - 14:00 pm</label>
+                      <span class="badge bg-secondary float-end">Ocupado</span>
+                    </li>
+                    <li class="list-group-item">
+                      <input type="checkbox" class="status" id="item1"> 
+                      <label for="item1">14:00 pm - 16:00 pm</label>
+                      <span class="badge bg-secondary float-end">Ocupado</span>
+                    </li>
+                    <li class="list-group-item">
+                      <input type="checkbox" class="status" id="item1"> 
+                      <label for="item1">16:00 pm - 18:00 pm</label>
+                      <span class="badge bg-secondary float-end">Ocupado</span>
+                    </li>
+                    <!-- Repite para los demás elementos -->
+                </ul>
+            </div>
+            <div class="col-md-3 text-center order-0 order-md-2">
+                <h1>Canchas Baaxal Koocha</h1>
+                <hr>
+                <img src="imgs/Baaxal Koocha.jpg" class="img-fluid" alt="Descripción de la imagen">
+                <p>Av. Xcaret SM 21, CP 77505, Cancun, Q.Roo </p>
+            </div>
+        </div>
+    </div>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/5.0.0-beta1/js/bootstrap.bundle.min.js"></script>
+    <script>
+        document.querySelectorAll('.status').forEach(item => {
+            item.addEventListener('change', event => {
+                let badge = event.target.nextElementSibling.nextElementSibling;
+                if (event.target.checked) {
+                    badge.textContent = 'Disponible';
+                    badge.classList.remove('bg-secondary');
+                    badge.classList.add('bg-success');
+                } else {
+                    badge.textContent = 'Ocupado';
+                    badge.classList.remove('bg-success');
+                    badge.classList.add('bg-secondary');
+                }
+            })
+        })
+    </script>
+    </main>
+
+</body>
+</html>
