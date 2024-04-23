@@ -12,7 +12,7 @@ document.addEventListener('DOMContentLoaded', function () {
         const nombreCancha = this.querySelector('input[name="nombreCancha"').value;
         const direccion = this.querySelector('input[name="direccion"').value;
         const tipoCancha = this.querySelector('select[name="tipoCancha"').value;
-
+        const rol = "3";
         // Verificar que las contraseñas sean iguales
         if (password !== confirmPassword) {
             alert('Las contraseñas no coinciden.');
@@ -32,7 +32,8 @@ document.addEventListener('DOMContentLoaded', function () {
                     contrasena: password,
                     nombreCancha :nombreCancha,
                     direccion :direccion,
-                    tipoCancha :tipoCancha
+                    tipoCancha :tipoCancha,
+                    rol: rol 
                 })
             },
             );
@@ -41,7 +42,7 @@ document.addEventListener('DOMContentLoaded', function () {
             }
             if (response.ok) {
                 alert('Usuario creado exitosamente.');
-                res.redirect('/login');
+                window.location.href = '/login';
             }
             const data = await response.json();
             alert('Usuario creado exitosamente.');

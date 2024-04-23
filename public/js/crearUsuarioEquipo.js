@@ -5,13 +5,11 @@ document.addEventListener('DOMContentLoaded', function () {
         event.preventDefault();
 
         const username = this.querySelector('input[name="username"]').value;
+        const equipo = this.querySelector('input[name="teamname"]').value;
         const email = this.querySelector('input[type="email"]').value;
         const password = this.querySelector('input[name="contrasena"]').value;
         const confirmPassword = this.querySelector('input[name="confirmPass"]').value;
-        console.log(username);
-        console.log(email);
-        console.log(password);
-        console.log(confirmPassword);
+        const rol = "2";
         // Verificar que las contraseñas sean iguales
         if (password !== confirmPassword) {
             alert('Las contraseñas no coinciden.');
@@ -20,15 +18,17 @@ document.addEventListener('DOMContentLoaded', function () {
 
         // Enviar solicitud POST a la API
         try {
-            const response = await fetch('http://localhost:2000/api/data', {
+            const response = await fetch('http://localhost:2000/api/dataEquipo', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
                 },
                 body: JSON.stringify({
                     nombre: username,
+                    nombreEquipo: equipo,
                     correo: email,
-                    contrasena: password
+                    contrasena: password,
+                    rol: rol
                 })
             },
             );
@@ -37,7 +37,7 @@ document.addEventListener('DOMContentLoaded', function () {
             }
             if (response.ok) {
                 alert('Usuario creado exitosamente.');
-                res.redirect('/login');
+                window.location.href = '/login';
             }
             const data = await response.json();
             alert('Usuario creado exitosamente.');

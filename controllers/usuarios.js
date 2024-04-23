@@ -4,6 +4,7 @@ const bcrypt = require('bcryptjs');
 const UsuariosFutbol = require('../models/UsuariosFutbol');
 const Canchas = require('../models/Canchas');
 const Roles = require('../models/Roles');
+const Equipos = require('../models/Equipos');
 
 const saltRounds = 10;
 const path = require('path');
@@ -37,7 +38,7 @@ const getUsuario = async (req, res) => {
             console.log("Controller/usuarios.js: ", userData, token);
             // Si la contraseña es correcta, redirige a la página de éxito
             //return res.status(200).json({ success: 'Login successful' });
-            return res.status(200).json({ token: token, userData: userData});
+            return res.status(200).json({ token: token, userData: userData });
             //req.session.userData = userData, token;
             //res.redirect('/home');
 
@@ -128,19 +129,73 @@ const postUsuario = async (req, res) => {
         res.status(400).json({ message: error.message });
     }*/
 }
+const postUsuarioEquipo = async (req, res) => {
+    //const { username, email, password } = usuario;
+    const { nombre, nombreEquipo, correo, contrasena, rol } = req.body;
+    console.log('const postUsuario', nombre, correo, contrasena, rol);
+    const Rol = await Roles.findOne({ id_rol: rol })
+    console.log('rol DB', Rol);
+    const guardarRol = Rol._id;
+    const contrasenaEncriptada = encriptarContrasena(contrasena);
+
+    try {
+        const newUser = new UsuariosFutbol({
+            nombre: nombre,
+            correo: correo,
+            contrasena: contrasenaEncriptada,
+            rol: guardarRol
+        })
+        const savedUser = await newUser.save(); // Guardar el nuevo usuario y obtener el objeto guardado
+        console.log('Usuario guardado:', savedUser)
+        const propietarioId = savedUser._id; // Obtener el ID del nuevo usuario
+        console.log('ID del propietario:', propietarioId);
+
+        const newEquipo = new Equipos({
+            nombre: nombreEquipo,
+            Capitan: propietarioId, // Usar el ID del propietario
+        });
+        console.log("Success")
+        await newEquipo.save(); // Guardar la nueva cancha
+        res.redirect('/login');
+
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: 'Error al guardar la configuración.' });
+    }
+    /*
+    try {
+        // Create a new instance of your model with data from the request body
+        const newUser = new UsuariosFutbol(req.body);
+        // Save the new user to the database
+        await newUser.save();
+        // Respond with the saved user data
+        res.status(201).json(newUser);
+    } catch (error) {
+        // If there's an error, respond with an error message
+        res.status(400).json({ message: error.message });
+    }*/
+}
 
 const postUsuarioCancha = async (req, res) => {
-    const { nombre, correo, contrasena, nombreCancha, direccion, tipoCancha } = req.body;
+    const { nombre, correo, contrasena, nombreCancha, direccion, tipoCancha, rol } = req.body;
+    console.log('const postUsuarioCancha', nombre, correo, contrasena, nombreCancha, direccion, tipoCancha, rol);
+    const Rol = await Roles.findOne({ id_rol: rol })
+    console.log('rol DB', Rol);
+    const guardarRol = Rol._id;
+    const contrasenaEncriptada = encriptarContrasena(contrasena);
     //const contrasenaEncriptada = encriptarContrasena(psw);
     try {
         // Guardar el nuevo usuario
         const newUser = new UsuariosFutbol({
             nombre: nombre,
             correo: correo,
-            contrasena: contrasena
+            contrasena: contrasenaEncriptada,
+            rol: guardarRol
         });
         const savedUser = await newUser.save(); // Guardar el nuevo usuario y obtener el objeto guardado
+        console.log('Usuario guardado:', savedUser)
         const propietarioId = savedUser._id; // Obtener el ID del nuevo usuario
+        console.log('ID del propietario:', propietarioId);
         // Guardar la nueva cancha
         const newCancha = new Canchas({
             nombre: nombreCancha,
@@ -148,6 +203,7 @@ const postUsuarioCancha = async (req, res) => {
             Propietario: propietarioId, // Usar el ID del propietario
             TipoDeCancha: tipoCancha
         });
+        console.log("Success")
         await newCancha.save(); // Guardar la nueva cancha
         res.redirect('/login');
     } catch (error) {
@@ -186,6 +242,6 @@ const postUsuarioCancha = async (req, res) => {
 module.exports = {
     getUsuario,
     postUsuario,
-    postUsuarioCancha//,
-    //postUsuarioEquipo
+    postUsuarioCancha,
+    postUsuarioEquipo
 }
