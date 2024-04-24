@@ -22,6 +22,12 @@ const UsuariosFutbolSchema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Roles', // Cambia 'Config' al nombre correcto de tu modelo Config
       },
+    numero: {
+        type: String,
+    },
+    posicion:{
+        type: String,
+    }
 });
 
 const UsuariosFutbol = mongoose.model('UsuariosFutbol', UsuariosFutbolSchema)

@@ -37,7 +37,7 @@ document.addEventListener('DOMContentLoaded', async function () {
                 document.querySelector('#nuevoUsuario').classList.remove('d-none');
                 // Token is valid
                 //console.log('Token is valid');
-
+/*
                 console.log('ROL', userData2.rol)
                 if (userData2.rol === "65e5585568f4b345aad77ab7") {
                     document.querySelector('#botonPartido').classList.remove('d-none');
@@ -45,7 +45,7 @@ document.addEventListener('DOMContentLoaded', async function () {
                     document.querySelector('#botonCancha').classList.remove('d-none');
                 } else if (userData2.rol === "65e5589f68f4b345aad77ab8") {
                     document.querySelector('#botonJugadores').classList.remove('d-none');
-                }
+                }*/
             }
             showAndHide(userData2.rol, userData2.username);
             console.log('userData2.id:', userData2.id);

@@ -95,6 +95,85 @@ app.post('/login', async (req, res) => {
 });
 */
 
+const agregarIntegrante = async (req, res) => {
+    console.log('req.body agregarIntegrante', req.body);
+    const { id, emailJugador, numJugador } = req.body;
+    console.log('correo', emailJugador);
+    try {
+        // Find all Canchas documents based on the provided id
+        const Equipo = await Equipos.findOne({ Capitan: id });
+        console.log('Equipo', Equipo);
+        let JugadorAgregar = await UsuariosFutbol.findOne({ correo: { $regex: `^${emailJugador}$`, $options: 'i' } });
+        //let JugadorAgregar = await UsuariosFutbol.find({ correo: correo });
+        console.log('JugadorBuscado', JugadorAgregar);
+        await UsuariosFutbol.updateOne({ correo: { $regex: `^${emailJugador}$`, $options: 'i' } }, { $set: { equipo: Equipo._id } });
+        await UsuariosFutbol.updateOne({ correo: { $regex: `^${emailJugador}$`, $options: 'i' } }, { $set: { numero: numJugador } });
+        JugadorAgregar = await UsuariosFutbol.find({ correo: { $regex: `^${emailJugador}$`, $options: 'i' } });
+        console.log('JugadorAgregar', JugadorAgregar);
+        res.status(200).json({ success: 'Jugador agregado exitosamente.' });
+    } catch (error) {
+        console.error(error);
+        res.status(200).json({ msg: 'Error CATCH searching for Canchas documents.' });
+    }
+}
+
+const eliminarIntegrante = async (req, res) => {
+    console.log('req.body agregarIntegrante', req.body);
+    const { id, emailJugador } = req.body;
+    console.log('correo', emailJugador);
+    try {
+        // Find all Canchas documents based on the provided id
+        const Equipo = await Equipos.findOne({ Capitan: id });
+        console.log('Equipo', Equipo);
+        let JugadorAgregar = await UsuariosFutbol.findOne({ correo: { $regex: `^${emailJugador}$`, $options: 'i' } });
+        //let JugadorAgregar = await UsuariosFutbol.find({ correo: correo });
+        console.log('JugadorBuscado', JugadorAgregar);
+        await UsuariosFutbol.updateOne({ correo: { $regex: `^${emailJugador}$`, $options: 'i' } }, { $set: { equipo: null } });
+        JugadorAgregar = await UsuariosFutbol.find({ correo: { $regex: `^${emailJugador}$`, $options: 'i' } });
+        console.log('JugadorAgregar', JugadorAgregar);
+        res.status(200).json({ success: 'Jugador agregado exitosamente.' });
+    } catch (error) {
+        console.error(error);
+        res.status(200).json({ msg: 'Error CATCH searching for Canchas documents.' });
+    }
+}
+
+const getEquipos = async (req, res) => {
+    /*try {
+        const equipos = await Equipos.find();
+        res.status(200).json(equipos);
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: 'Error al obtener los equipos.' });
+    }*/
+    console.log(req.body);
+    const { id } = req.body;
+    try {
+        // Find all Canchas documents based on the provided id
+        const Equipo = await Equipos.findOne({ Capitan: id });
+        console.log('Equipo', Equipo);
+        const JugadoresEquipo = await UsuariosFutbol.find({ equipo: Equipo._id });
+        console.log('JugadoresEquipo', JugadoresEquipo);
+        // Process the array of canchas documents
+        /*if (canchas.length === 0) {
+            console.log("No canchas found for the provided Propietario ID");
+        } else {
+            canchas.forEach(cancha => {
+                console.log("Cancha ID:", cancha._id);
+                // Process each cancha document as needed
+            });
+        }*/
+        // Respond with the array of canchas documents or an appropriate message
+        if (!JugadoresEquipo) {
+            res.status(200).json({ msg: 'Error searching for Canchas documents.' });
+        }
+        res.status(200).json({ JugadoresEquipo });
+
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: 'Error searching for Canchas documents.' });
+    }
+}
 
 const postUsuario = async (req, res) => {
     const usuario = req.body;
@@ -332,7 +411,7 @@ const postUsuarioCancha = async (req, res) => {
         console.error(error);
         res.status(500).json({ error: 'Error al guardar la configuración.' });
     }
-
+ 
     const newCancha = new Canchas ({
         nombre : nombreCancha,
         direccion : direccion,
@@ -354,5 +433,8 @@ module.exports = {
     postUsuarioCancha,
     postUsuarioEquipo,
     postConfigCanchas,
-    getConfigCanchas
+    getConfigCanchas,
+    getEquipos,
+    agregarIntegrante,
+    eliminarIntegrante
 }
