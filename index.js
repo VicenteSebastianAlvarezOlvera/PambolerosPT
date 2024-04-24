@@ -32,6 +32,10 @@ app.post('/verifyToken', (req, res) => {
         return res.status(400).json({ error: 'Token verification failed' });
     }
 });
+/*app.get('/crearTorneo', (req, res) => {
+    //res.sendFile(path.join(__dirname, 'public/views/crearTorneo.html'));
+    res.sendFile(path.join(__dirname, 'views/crearTorneo.html'));
+});*/
 
 app.get('/login', (req, res) => {
     //res.sendFile(path.join(__dirname, 'public/views/login/login.html'));

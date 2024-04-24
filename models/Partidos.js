@@ -1,10 +1,6 @@
 const mongoose = require('mongoose');
 
 const PartidosSchema = new mongoose.Schema({
-    /*id: {
-        type: String,
-        required: true
-    },*/
     cancha: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Canchas',
@@ -26,9 +22,13 @@ const PartidosSchema = new mongoose.Schema({
     },
     Ganador: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'Equipos',
+        ref: 'Equipos'
+    },
+    Arbitro: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Usuarios',
         required: true
-    }
+    }  
 });
 
 const Partidos = mongoose.model('Partidos', PartidosSchema);

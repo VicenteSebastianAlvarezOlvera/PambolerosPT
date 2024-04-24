@@ -6,6 +6,8 @@ const Canchas = require('../models/Canchas');
 const Roles = require('../models/Roles');
 const configCanchas = require('../models/configCanchas');
 const Equipos = require('../models/Equipos');
+const Partidos = require('../models/Partidos');
+const Torneos = require('../models/Torneo');
 
 const saltRounds = 10;
 const path = require('path');
@@ -54,6 +56,143 @@ const getUsuario = async (req, res) => {
     }
 }
 
+const crearTorneo = async (req, res) => {
+    try {
+        const equiposlista = await Equipos.find();
+        //console.log('Equipos', equipos);
+        //console.log('EquiposArray', Equipo);
+        const arbitroslista = await UsuariosFutbol.find({ rol: '66290a5f66d6992f1aed7d8e' });
+        //console.log('Arbitros', arbitros);
+        //console.log('ArbitrosArray', Arbitros);
+        const canchasLista = await Canchas.find();
+        //console.log('Canchas', canchas);
+        //console.log('Canchas', Cancha);
+
+        const Equipo = equiposlista.map(equipo => equipo._id);
+        const Arbitros = arbitroslista.map(arbitro => arbitro._id);
+        const Cancha = canchasLista.map(canchas => canchas._id);
+        const DiasSemana = ['Saturday', 'Sunday'];
+
+        const data = {
+            Equipos: Equipo,
+            Arbitros: Arbitros,
+            Canchas: Cancha,
+            DiasSemana: DiasSemana
+        };
+
+        const jsonString = JSON.stringify(data);
+        console.log(jsonString);
+
+        const filePath = 'data.json';
+        fs.writeFile(filePath, jsonString, (err) => {
+            if (err) {
+                console.error('Error writing JSON to file:', err);
+                return;
+            }
+            console.log('JSON saved to', filePath);
+        });
+
+        const { exec } = require('child_process');
+
+        // Replace 'script.py' with the name of your Python script
+        const pythonScript = 'Generador_torneos.py';
+
+        exec(`python ${pythonScript}`, (error, stdout, stderr) => {
+            if (error) {
+                console.error(`Error executing Python script: ${error}`);
+                return;
+            }
+            console.log('Python script output:');
+            //console.log(stdout);
+        });
+
+        res.status(200).json({ success: 'Torneo creado exitosamente.' });
+
+        // Function to read data from JSON file
+        function readJSONFile(filename) {
+            try {
+                // Read the JSON file synchronously
+                const data = fs.readFileSync(filename, 'utf8');
+                // Parse the JSON data
+                return JSON.parse(data);
+            } catch (error) {
+                // If an error occurs, log it and return null
+                console.error('Error reading JSON file:', error);
+                return null;
+            }
+        }
+        let partidoIDs = [];
+        // Usage example
+        const partidosTorneo = readJSONFile('Torneo2024-04-24.json');
+        console.log("JSON de resultado", partidosTorneo);
+        for (const partidoData of partidosTorneo) {
+            const partido = new Partidos({
+                cancha: partidoData.cancha,
+                fecha: new Date(partidoData.fecha_hora),
+                Equipo1: partidoData.equipo_local,
+                Equipo2: partidoData.equipo_visitante,
+                Arbitro: partidoData.arbitro
+            });
+            await partido.save();
+            partidoIDs.push(partido._id);
+            console.log(`Partido ${partidoData.numero} saved to database.`);
+        }
+        console.log("All partidos saved to database successfully.");
+        const torneo = new Torneos({
+            // Assuming you have the tournament name and start date available
+            nombre: 'Torneo 2024',
+            Fecha_inicio: new Date(), // Replace with the actual start date of the tournament
+            Equipos: Equipo,
+            partidos: partidoIDs  // Assuming partidosTorneo contains the IDs of the saved partidos
+        });
+        await torneo.save();
+        console.log("Torneo saved to database successfully.");
+    }
+    catch (error) {
+        console.error(error);
+        res.status(500).json({ error: 'Hubo un error en la generacion de los partidos.' });
+    }
+}
+
+const guardarPartidos = async (req, res) => { //consultar partidos
+    console.log("This is just a test")
+    try {
+        const latestTorneo = await Torneos.find().sort({ fecha: -1 }).limit(1).lean();
+        console.log("Torneo", latestTorneo);
+
+        if (latestTorneo.length > 0) { // Check if latestTorneo contains any documents
+            const partidosIDs = latestTorneo[0].partidos; // Access the partidos property of the first element
+            console.log("Partidos", partidosIDs);
+
+            // Select all partidos with IDs in the partidosIDs array
+            const allPartidos = await Partidos.find({ _id: { $in: partidosIDs } }).lean();
+            console.log('allPartidos', allPartidos);
+            const partidosWithDetails = [];
+
+            for (const partido of allPartidos) {
+                const canchaDetails = await Canchas.findById(partido.cancha).lean();
+                const equipo1Details = await Equipos.findById(partido.Equipo1).lean();
+                const equipo2Details = await Equipos.findById(partido.Equipo2).lean();
+
+                const partidoWithDetails = {
+                    cancha: canchaDetails.nombre,
+                    fecha: partido.fecha,
+                    Equipo1: equipo1Details.nombre,
+                    Equipo2: equipo2Details.nombre,
+                    //Arbitro: partido.Arbitro,
+                };
+                partidosWithDetails.push(partidoWithDetails);
+            }
+            console.log("partidosWithDetails", partidosWithDetails);
+            res.status(200).json({ partidosWithDetails });
+        } else {
+            console.log("No Torneo found.");
+        }
+    } catch (error) {
+        console.error("Error:", error);
+    }
+
+}
 
 /*const getUsuario = async (req, res) => {
 
@@ -436,5 +575,7 @@ module.exports = {
     getConfigCanchas,
     getEquipos,
     agregarIntegrante,
-    eliminarIntegrante
+    eliminarIntegrante,
+    guardarPartidos,
+    crearTorneo
 }

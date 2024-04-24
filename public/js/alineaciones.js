@@ -94,7 +94,7 @@ document.addEventListener('DOMContentLoaded', async function () {
 
 
 
-document.getElementById('agregarEliminarUsuario').addEventListener('submit', async function (event) {
+document.querySelector('#agregarEliminarUsuario').addEventListener('submit', async function (event) {
     event.preventDefault(); // Prevent the form from submitting normally
     const emailJugador = this.querySelector('input[name="correoJugador"]').value;
     const opcion = this.querySelector('select[name="AgregarEliminar"]').value;
