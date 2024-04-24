@@ -21,7 +21,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
         // Enviar solicitud POST a la API
         try {
-            const response = await fetch('http://localhost:2000/api/dataCancha', {
+            const response = await fetch('/api/dataCancha', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'

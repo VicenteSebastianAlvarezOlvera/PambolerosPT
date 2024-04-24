@@ -11,7 +11,7 @@ document.addEventListener('DOMContentLoaded', function () {
         console.log(password);
         // Enviar solicitud GET a la API
         try {
-            const response = await fetch('http://localhost:2000/api/getdata', {
+            const response = await fetch('/api/getdata', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'

@@ -4,6 +4,7 @@ const bcrypt = require('bcryptjs');
 const UsuariosFutbol = require('../models/UsuariosFutbol');
 const Canchas = require('../models/Canchas');
 const Roles = require('../models/Roles');
+const configCanchas = require('../models/configCanchas');
 const Equipos = require('../models/Equipos');
 
 const saltRounds = 10;
@@ -31,6 +32,7 @@ const getUsuario = async (req, res) => {
         if (bcrypt.compareSync(contrasena, UsuarioSesion.contrasena)) {
             const token = jwt.sign({ correo: correo }, process.env.PRIVATE_KEY, { expiresIn: '1h' });
             const userData = {
+                id: UsuarioSesion._id,
                 username: UsuarioSesion.nombre,
                 rol: UsuarioSesion.rol
                 // Other user data...
@@ -176,6 +178,113 @@ const postUsuarioEquipo = async (req, res) => {
     }*/
 }
 
+// const postConfigCanchas = async (req, res) => {
+//     console.log(req.body);
+//     const { checkedCheckboxes, id } = req.body;
+
+//     try {
+//         const canchas = await Canchas.findOne({ Propietario: id });
+//         console.log(canchas._id);
+//         const configcanchas = await configCanchas.findOne({ Canchas: canchas._id });
+//         if(!configcanchas){
+//             const newConfigCanchas = new configCanchas({
+//                 Canchas: canchas._id,
+//                 status: checkedCheckboxes
+//             });
+//             await newConfigCanchas.save();
+//         }
+//         /*canchas.forEach(async (cancha) => {
+//             cancha.status = checkedCheckboxes.includes(cancha._id.toString());
+//             await cancha.save();
+//         });*/
+//         res.status(200).json({ success: 'Configuración guardada exitosamente.' });
+
+//     }catch (error) {
+//         console.error(error);
+//         res.status(500).json({ error: 'Error al guardar la configuración.' });
+//     }
+// }
+const postConfigCanchas = async (req, res) => {
+    console.log(req.body);
+    const { checkedCheckboxes, id } = req.body;
+    try {
+        // Find the Canchas document based on the provided id
+        const canchas = await Canchas.findOne({ Propietario: id });
+        console.log(canchas._id);
+
+        // Find the ConfigCanchas document associated with the Canchas document
+        let configcanchasDB = await configCanchas.findOne({ Cancha: canchas._id });
+
+        // If no ConfigCanchas document exists, create a new one
+        if (!configcanchasDB) {
+            configcanchasDB = new configCanchas({
+                Cancha: canchas._id,
+                "6-8": false,
+                "8-10": false,
+                "10-12": false,
+                "12-14": false,
+                "14-16": false,
+                "16-18": false
+            });
+        }
+        // Update the status of each time slot based on the checked checkboxes
+        configcanchasDB["6-8"] = checkedCheckboxes.includes('item1');
+        configcanchasDB["8-10"] = checkedCheckboxes.includes('item2');
+        configcanchasDB["10-12"] = checkedCheckboxes.includes('item3');
+        configcanchasDB["12-14"] = checkedCheckboxes.includes('item4');
+        configcanchasDB["14-16"] = checkedCheckboxes.includes('item5');
+        configcanchasDB["16-18"] = checkedCheckboxes.includes('item6');
+        console.log(configcanchasDB);
+        // Save the updated ConfigCanchas document
+        await configcanchasDB.save();
+        res.status(200).json({ success: 'Configuración guardada exitosamente.' });
+
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: 'Error al guardar la configuración.' });
+    }
+}
+
+const getConfigCanchas = async (req, res) => {
+    console.log('req.body:', req.body);
+    const { id } = req.body;
+    console.log("ID", id);
+    try {
+        // Find the Canchas document based on the provided id
+        const canchas = await Canchas.findOne({ Propietario: id });
+        console.log("Cancha registro", canchas._id);
+        // Find the ConfigCanchas document associated with the Canchas document
+        let configcanchasDB = await configCanchas.findOne({ Cancha: canchas._id });
+        // If no ConfigCanchas document exists, create a new one
+        /*if (!configcanchasDB) {
+            console.log("Nada todavia");
+            res.status(200).json({ message: "Nada todavia" });
+        }*/
+        if (!configcanchasDB) {
+            configcanchasDB = new configCanchas({
+                Cancha: canchas._id,
+                "6-8": false,
+                "8-10": false,
+                "10-12": false,
+                "12-14": false,
+                "14-16": false,
+                "16-18": false
+            });
+        }
+        console.log('configcanchasDB', configcanchasDB);
+        console.log('canchas', canchas);
+        // Save the updated ConfigCanchas document
+        //await configcanchasDB.save();
+        res.status(200).json({ configcanchasDB, canchas });
+
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: 'Error al guardar la configuración.' });
+    }
+}
+
+
+
 const postUsuarioCancha = async (req, res) => {
     const { nombre, correo, contrasena, nombreCancha, direccion, tipoCancha, rol } = req.body;
     console.log('const postUsuarioCancha', nombre, correo, contrasena, nombreCancha, direccion, tipoCancha, rol);
@@ -243,5 +352,7 @@ module.exports = {
     getUsuario,
     postUsuario,
     postUsuarioCancha,
-    postUsuarioEquipo
+    postUsuarioEquipo,
+    postConfigCanchas,
+    getConfigCanchas
 }

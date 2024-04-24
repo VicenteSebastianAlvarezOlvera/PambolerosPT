@@ -18,7 +18,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
         // Enviar solicitud POST a la API
         try {
-            const response = await fetch('http://localhost:2000/api/dataEquipo', {
+            const response = await fetch('/api/dataEquipo', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
