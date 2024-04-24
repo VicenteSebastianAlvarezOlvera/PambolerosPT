@@ -109,7 +109,7 @@ document.querySelector('#agregarEliminarUsuario').addEventListener('submit', asy
         return;
     }
     if (opcion === "1") {
-        if(numJugador === "" || !numJugador){
+        if (numJugador === "" || !numJugador) {
             alert('Agregue un número para el jugador.');
             return;
         }
@@ -129,7 +129,10 @@ document.querySelector('#agregarEliminarUsuario').addEventListener('submit', asy
                 console.log('Error al agregar jugador. !response.ok');
             }
             if (response.ok) {
-                alert('Jugador agregado exitosamente.');
+                //alert('Jugador agregado exitosamente.');
+                const responseData = await response.json(); // Parse the response JSON
+                const msg = responseData.msg; // Extract the msg property
+                alert(msg);
                 window.location.href = '/alineaciones';
             }
             //const data = await response.json();
@@ -155,7 +158,10 @@ document.querySelector('#agregarEliminarUsuario').addEventListener('submit', asy
                 console.log('Error al eliminar jugador. !response.ok');
             }
             if (response.ok) {
-                alert('Jugador eliminado exitosamente.');
+                //alert('Jugador eliminado exitosamente.');
+                const responseData = await response.json(); // Parse the response JSON
+                const msg = responseData.msg; // Extract the msg property
+                alert(msg);
                 window.location.href = '/alineaciones';
             }
             //const data = await response.json();

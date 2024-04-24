@@ -245,11 +245,15 @@ const agregarIntegrante = async (req, res) => {
         let JugadorAgregar = await UsuariosFutbol.findOne({ correo: { $regex: `^${emailJugador}$`, $options: 'i' } });
         //let JugadorAgregar = await UsuariosFutbol.find({ correo: correo });
         console.log('JugadorBuscado', JugadorAgregar);
+        if(JugadorAgregar.equipo && JugadorAgregar.equipo.toString() !== Equipo._id.toString()){
+            console.log('El jugador  pertenece a otro equipo.')
+            return res.status(200).json({ msg: 'El jugador ya pertenece a otro equipo.' });
+        }
         await UsuariosFutbol.updateOne({ correo: { $regex: `^${emailJugador}$`, $options: 'i' } }, { $set: { equipo: Equipo._id } });
         await UsuariosFutbol.updateOne({ correo: { $regex: `^${emailJugador}$`, $options: 'i' } }, { $set: { numero: numJugador } });
         JugadorAgregar = await UsuariosFutbol.find({ correo: { $regex: `^${emailJugador}$`, $options: 'i' } });
         console.log('JugadorAgregar', JugadorAgregar);
-        res.status(200).json({ success: 'Jugador agregado exitosamente.' });
+        res.status(200).json({ msg: 'Jugador agregado exitosamente.' });
     } catch (error) {
         console.error(error);
         res.status(200).json({ msg: 'Error CATCH searching for Canchas documents.' });
@@ -265,12 +269,16 @@ const eliminarIntegrante = async (req, res) => {
         const Equipo = await Equipos.findOne({ Capitan: id });
         console.log('Equipo', Equipo);
         let JugadorAgregar = await UsuariosFutbol.findOne({ correo: { $regex: `^${emailJugador}$`, $options: 'i' } });
+        if((JugadorAgregar.equipo && JugadorAgregar.equipo.toString() !== Equipo._id.toString())){
+            console.log('El jugador no pertenece a este equipo.')
+            return res.status(200).json({ msg: 'El jugador no pertenece a este equipo.' });
+        }
         //let JugadorAgregar = await UsuariosFutbol.find({ correo: correo });
         console.log('JugadorBuscado', JugadorAgregar);
         await UsuariosFutbol.updateOne({ correo: { $regex: `^${emailJugador}$`, $options: 'i' } }, { $set: { equipo: null } });
         JugadorAgregar = await UsuariosFutbol.find({ correo: { $regex: `^${emailJugador}$`, $options: 'i' } });
         console.log('JugadorAgregar', JugadorAgregar);
-        res.status(200).json({ success: 'Jugador agregado exitosamente.' });
+        res.status(200).json({ msg: 'Jugador agregado exitosamente.' });
     } catch (error) {
         console.error(error);
         res.status(200).json({ msg: 'Error CATCH searching for Canchas documents.' });
