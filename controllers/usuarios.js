@@ -60,18 +60,41 @@ const crearTorneo = async (req, res) => {
     try {
         const equiposlista = await Equipos.find();
         //console.log('Equipos', equipos);
-        //console.log('EquiposArray', Equipo);
+
         const arbitroslista = await UsuariosFutbol.find({ rol: '66290a5f66d6992f1aed7d8e' });
         //console.log('Arbitros', arbitros);
-        //console.log('ArbitrosArray', Arbitros);
+
         const canchasLista = await Canchas.find();
         //console.log('Canchas', canchas);
-        //console.log('Canchas', Cancha);
 
         const Equipo = equiposlista.map(equipo => equipo._id);
         const Arbitros = arbitroslista.map(arbitro => arbitro._id);
         const Cancha = canchasLista.map(canchas => canchas._id);
         const DiasSemana = ['Saturday', 'Sunday'];
+
+        console.log('EquiposArray', Equipo);
+        console.log('ArbitrosArray', Arbitros);
+        console.log('Canchas', Cancha);
+
+        // Fisher-Yates shuffle algorithm
+        function shuffleArray(array) {
+            for (let i = array.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [array[i], array[j]] = [array[j], array[i]];
+            }
+            return array;
+        }
+
+        // Shuffle elements within the arrays
+        // const shuffledEquipos = shuffleArray(Equipo);
+        // const shuffledArbitros = shuffleArray(Arbitros);
+        // const shuffledCanchas = shuffleArray(Cancha);
+
+        // Deep clone arrays before shuffling
+        const shuffledEquipos = shuffleArray(JSON.parse(JSON.stringify(Equipo)));
+        const shuffledArbitros = shuffleArray(JSON.parse(JSON.stringify(Arbitros)));
+        const shuffledCanchas = shuffleArray(JSON.parse(JSON.stringify(Cancha)));
+
 
         const data = {
             Equipos: Equipo,
@@ -79,51 +102,80 @@ const crearTorneo = async (req, res) => {
             Canchas: Cancha,
             DiasSemana: DiasSemana
         };
-
+        const shuffleddata = {
+            Equipos: shuffledEquipos,
+            Arbitros: shuffledArbitros,
+            Canchas: shuffledCanchas,
+            DiasSemana: DiasSemana
+        };
         const jsonString = JSON.stringify(data);
-        console.log(jsonString);
-
+        const shuffledjsonString = JSON.stringify(shuffleddata);
+        console.log('jsonString', jsonString);
+        console.log('shuffledjsonString', shuffledjsonString);
+        const shuffledfilePath = 'shuffleddata.json';
         const filePath = 'data.json';
-        fs.writeFile(filePath, jsonString, (err) => {
-            if (err) {
-                console.error('Error writing JSON to file:', err);
-                return;
-            }
+        // try {
+            // fs.writeFile(filePath, jsonString, (err) => {
+                // if (err) {
+                    // console.error('Error writing JSON to file:', err);
+                    // return;
+                // }
+                // console.log('JSON saved to', filePath);
+            // });
+            // fs.writeFile(shuffledfilePath, shuffledjsonString, (err) => {
+                // if (err) {
+                    // console.error('Error writing JSON to file:', err);
+                    // return;
+                // }
+                // console.log('JSON saved to', shuffledfilePath);
+            // });
+        // }
+        // catch {
+            // console.log("Error while saving files")
+        // }
+        try {
+            fs.writeFileSync(filePath, jsonString);
             console.log('JSON saved to', filePath);
-        });
-
-        const { exec } = require('child_process');
-
+            fs.writeFileSync(shuffledfilePath, shuffledjsonString);
+            console.log('JSON saved to', shuffledfilePath);
+        }
+        catch (error) {
+            console.error("Error while saving files:", error);
+        }
+    console.log("Before  const { execSync } = require('child_process');")        
+        const { execSync } = require('child_process');
+        console.log(" After const { execSync } = require('child_process');")
         // Replace 'script.py' with the name of your Python script
+        //const pythonScript = 'Generador_torneos.py';
         const pythonScript = 'Generador_torneos.py';
-
-        exec(`python ${pythonScript}`, (error, stdout, stderr) => {
-            if (error) {
-                console.error(`Error executing Python script: ${error}`);
-                return;
-            }
+        console.log("About to try to run py script")
+        try {
+            const stdout = execSync(`python ${pythonScript}`);
             console.log('Python script output:');
-            //console.log(stdout);
-        });
+            console.log(stdout.toString());
+        } catch (error) {
+            console.error(`Error executing Python script: ${error}`);
+            return;
+        }
 
         res.status(200).json({ success: 'Torneo creado exitosamente.' });
 
         // Function to read data from JSON file
         function readJSONFile(filename) {
             try {
-                // Read the JSON file synchronously
+                //    Read the JSON file synchronously
                 const data = fs.readFileSync(filename, 'utf8');
-                // Parse the JSON data
+                //    Parse the JSON data
                 return JSON.parse(data);
             } catch (error) {
-                // If an error occurs, log it and return null
+                //    If an error occurs, log it and return null
                 console.error('Error reading JSON file:', error);
                 return null;
             }
         }
         let partidoIDs = [];
         // Usage example
-        const partidosTorneo = readJSONFile('Torneo2024-04-24.json');
+        const partidosTorneo = readJSONFile('TorneoShuffled.json');
         console.log("JSON de resultado", partidosTorneo);
         for (const partidoData of partidosTorneo) {
             const partido = new Partidos({
@@ -139,7 +191,7 @@ const crearTorneo = async (req, res) => {
         }
         console.log("All partidos saved to database successfully.");
         const torneo = new Torneos({
-            // Assuming you have the tournament name and start date available
+            //    Assuming you have the tournament name and start date available
             nombre: 'Torneo 2024',
             Fecha_inicio: new Date(), // Replace with the actual start date of the tournament
             Equipos: Equipo,
@@ -155,18 +207,18 @@ const crearTorneo = async (req, res) => {
 }
 
 const guardarPartidos = async (req, res) => { //consultar partidos
-    console.log("This is just a test")
+    //console.log("This is just a test")
     try {
-        const latestTorneo = await Torneos.find().sort({ fecha: -1 }).limit(1).lean();
-        console.log("Torneo", latestTorneo);
+        const latestTorneo = await Torneos.find().sort({ Fecha_inicio: -1 }).limit(1).lean();
+        //console.log("Torneo", latestTorneo);
 
         if (latestTorneo.length > 0) { // Check if latestTorneo contains any documents
             const partidosIDs = latestTorneo[0].partidos; // Access the partidos property of the first element
-            console.log("Partidos", partidosIDs);
+            //console.log("Partidos", partidosIDs);
 
             // Select all partidos with IDs in the partidosIDs array
             const allPartidos = await Partidos.find({ _id: { $in: partidosIDs } }).lean();
-            console.log('allPartidos', allPartidos);
+            //console.log('allPartidos', allPartidos);
             const partidosWithDetails = [];
 
             for (const partido of allPartidos) {
@@ -183,7 +235,7 @@ const guardarPartidos = async (req, res) => { //consultar partidos
                 };
                 partidosWithDetails.push(partidoWithDetails);
             }
-            console.log("partidosWithDetails", partidosWithDetails);
+            //console.log("partidosWithDetails", partidosWithDetails);
             res.status(200).json({ partidosWithDetails });
         } else {
             console.log("No Torneo found.");
@@ -245,7 +297,7 @@ const agregarIntegrante = async (req, res) => {
         let JugadorAgregar = await UsuariosFutbol.findOne({ correo: { $regex: `^${emailJugador}$`, $options: 'i' } });
         //let JugadorAgregar = await UsuariosFutbol.find({ correo: correo });
         console.log('JugadorBuscado', JugadorAgregar);
-        if(JugadorAgregar.equipo && JugadorAgregar.equipo.toString() !== Equipo._id.toString()){
+        if (JugadorAgregar.equipo && JugadorAgregar.equipo.toString() !== Equipo._id.toString()) {
             console.log('El jugador  pertenece a otro equipo.')
             return res.status(200).json({ msg: 'El jugador ya pertenece a otro equipo.' });
         }
@@ -269,7 +321,7 @@ const eliminarIntegrante = async (req, res) => {
         const Equipo = await Equipos.findOne({ Capitan: id });
         console.log('Equipo', Equipo);
         let JugadorAgregar = await UsuariosFutbol.findOne({ correo: { $regex: `^${emailJugador}$`, $options: 'i' } });
-        if((JugadorAgregar.equipo && JugadorAgregar.equipo.toString() !== Equipo._id.toString())){
+        if ((JugadorAgregar.equipo && JugadorAgregar.equipo.toString() !== Equipo._id.toString())) {
             console.log('El jugador no pertenece a este equipo.')
             return res.status(200).json({ msg: 'El jugador no pertenece a este equipo.' });
         }

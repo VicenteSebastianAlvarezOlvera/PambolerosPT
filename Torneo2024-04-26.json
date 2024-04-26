@@ -1,0 +1,66 @@
+[
+    {
+        "numero": 1,
+        "equipo_local": "6627375a99cf9c8a6fc492e1",
+        "equipo_visitante": "6628c8bc5a65fc98cc5719bf",
+        "fecha_hora": "2024-05-03 10:00",
+        "cancha": "6629000b86f301f08855a5bc",
+        "arbitro": "66290b9becf434cfc17e3889"
+    },
+    {
+        "numero": 2,
+        "equipo_local": "6629023286f301f08855a60a",
+        "equipo_visitante": "66274fad19e1d09540fa4327",
+        "fecha_hora": "2024-05-03 13:00",
+        "cancha": "6629006a86f301f08855a5c1",
+        "arbitro": "66290b8becf434cfc17e3886"
+    },
+    {
+        "numero": 3,
+        "equipo_local": "6628c0fe5a65fc98cc57193a",
+        "equipo_visitante": "6629026f86f301f08855a612",
+        "fecha_hora": "2024-04-26 13:00",
+        "cancha": "6629000b86f301f08855a5bc",
+        "arbitro": "66290b2eecf434cfc17e3880"
+    },
+    {
+        "numero": 4,
+        "equipo_local": "6629032a86f301f08855a62b",
+        "equipo_visitante": "662a6a42831e3bff51f4c7e0",
+        "fecha_hora": "2024-04-26 16:00",
+        "cancha": "6629000b86f301f08855a5bc",
+        "arbitro": "66290b75ecf434cfc17e3883"
+    },
+    {
+        "numero": 5,
+        "equipo_local": "6629028586f301f08855a61c",
+        "equipo_visitante": "6628c5795a65fc98cc57198b",
+        "fecha_hora": "2024-05-03 07:00",
+        "cancha": "6629000b86f301f08855a5bc",
+        "arbitro": "66290babecf434cfc17e388c"
+    },
+    {
+        "numero": 6,
+        "equipo_local": "662902ae86f301f08855a621",
+        "equipo_visitante": "6629039686f301f08855a630",
+        "fecha_hora": "2024-05-03 08:00",
+        "cancha": "662900ae86f301f08855a5c6",
+        "arbitro": "66290b9becf434cfc17e3889"
+    },
+    {
+        "numero": 7,
+        "equipo_local": "662902d086f301f08855a626",
+        "equipo_visitante": "6628818314cd93dd32b347f1",
+        "fecha_hora": "2024-05-03 17:00",
+        "cancha": "6629000b86f301f08855a5bc",
+        "arbitro": "66290b8becf434cfc17e3886"
+    },
+    {
+        "numero": 8,
+        "equipo_local": "Equipo sin rival: ",
+        "equipo_visitante": "6629027486f301f08855a617",
+        "fecha_hora": "2024-05-03 09:00",
+        "cancha": "6629000b86f301f08855a5bc",
+        "arbitro": "No asignado"
+    }
+]

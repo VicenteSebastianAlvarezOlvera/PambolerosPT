@@ -87,7 +87,8 @@ def obtener_datos(file_name):
         with open(file_name, 'r') as file:
             data = json.load(file)
         return data
-datos = obtener_datos('data.json')
+#datos = obtener_datos('data.json')
+datos = obtener_datos('shuffleddata.json')
 
 
 # Ejemplo de uso
@@ -118,6 +119,6 @@ hora_inicio = 6#int(input("Ingrese la hora de inicio del rango de horas (0-23): 
 hora_fin = 18#int(input("Ingrese la hora de fin del rango de horas (1-24): "))
 # Solicitar nombre del archivo de salida
 fecha = str(date.today())
-output_file = "Torneo" + fecha + ".json"
+output_file = "TorneoShuffled.json"
 
 calendario.generar_calendario_optimo(fecha_inicio_torneo, dias_semana, hora_inicio, hora_fin, output_file)
